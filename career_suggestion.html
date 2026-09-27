@@ -1,0 +1,1248 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Career Suggestion System</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:#07111f;
+    color:white;
+    min-height:100vh;
+    overflow-x:hidden;
+}
+
+/* BACKGROUND */
+body::before{
+    content:"";
+    position:fixed;
+    width:500px;
+    height:500px;
+    background:#5b21b6;
+    border-radius:50%;
+    filter:blur(130px);
+    opacity:.35;
+    top:-200px;
+    left:-150px;
+    z-index:-2;
+}
+
+body::after{
+    content:"";
+    position:fixed;
+    width:500px;
+    height:500px;
+    background:#0ea5e9;
+    border-radius:50%;
+    filter:blur(140px);
+    opacity:.25;
+    bottom:-200px;
+    right:-150px;
+    z-index:-2;
+}
+
+/* NAVBAR */
+nav{
+    width:100%;
+    padding:18px 7%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    position:sticky;
+    top:0;
+    z-index:100;
+    background:rgba(7,17,31,.75);
+    backdrop-filter:blur(15px);
+    border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.logo{
+    font-size:22px;
+    font-weight:bold;
+    letter-spacing:.5px;
+}
+
+.logo span{
+    color:#38bdf8;
+}
+
+.nav-tag{
+    font-size:13px;
+    color:#b8c4d6;
+}
+
+/* HERO */
+.hero{
+    min-height:90vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:60px 20px;
+}
+
+.hero-content{
+    max-width:900px;
+}
+
+.badge{
+    display:inline-block;
+    padding:9px 18px;
+    border:1px solid rgba(56,189,248,.35);
+    background:rgba(56,189,248,.08);
+    border-radius:50px;
+    color:#7dd3fc;
+    font-size:13px;
+    margin-bottom:25px;
+}
+
+.hero h1{
+    font-size:clamp(45px,8vw,82px);
+    line-height:1;
+    margin-bottom:25px;
+    background:linear-gradient(90deg,#fff,#7dd3fc,#c4b5fd);
+    -webkit-background-clip:text;
+    color:transparent;
+}
+
+.hero p{
+    max-width:700px;
+    margin:auto;
+    color:#aebbd0;
+    font-size:18px;
+    line-height:1.7;
+}
+
+.start-btn{
+    margin-top:35px;
+    padding:16px 34px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(135deg,#2563eb,#7c3aed);
+    color:white;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+    box-shadow:0 15px 40px rgba(37,99,235,.3);
+    transition:.3s;
+}
+
+.start-btn:hover{
+    transform:translateY(-4px) scale(1.03);
+    box-shadow:0 20px 50px rgba(124,58,237,.4);
+}
+
+/* MAIN */
+.container{
+    width:min(1000px,92%);
+    margin:auto;
+}
+
+/* QUIZ */
+.quiz-section{
+    padding:70px 0;
+    display:none;
+}
+
+.section-title{
+    text-align:center;
+    margin-bottom:40px;
+}
+
+.section-title h2{
+    font-size:38px;
+    margin-bottom:10px;
+}
+
+.section-title p{
+    color:#9eabc0;
+}
+
+/* PROGRESS */
+.progress-info{
+    display:flex;
+    justify-content:space-between;
+    color:#aab7ca;
+    font-size:14px;
+    margin-bottom:10px;
+}
+
+.progress-bar{
+    height:9px;
+    background:#172337;
+    border-radius:20px;
+    overflow:hidden;
+    margin-bottom:30px;
+}
+
+.progress-fill{
+    height:100%;
+    width:12.5%;
+    background:linear-gradient(90deg,#38bdf8,#8b5cf6);
+    border-radius:20px;
+    transition:.5s;
+}
+
+/* QUESTION CARD */
+.question-card{
+    background:rgba(16,29,48,.72);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:25px;
+    padding:40px;
+    box-shadow:0 25px 80px rgba(0,0,0,.3);
+    backdrop-filter:blur(15px);
+}
+
+.question-number{
+    color:#7dd3fc;
+    font-size:14px;
+    font-weight:bold;
+    letter-spacing:1px;
+    margin-bottom:12px;
+}
+
+.question{
+    font-size:28px;
+    line-height:1.35;
+    margin-bottom:30px;
+}
+
+/* OPTIONS */
+.options{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.option{
+    padding:18px;
+    border:1px solid rgba(255,255,255,.1);
+    background:rgba(255,255,255,.035);
+    color:#e6edf7;
+    border-radius:15px;
+    cursor:pointer;
+    text-align:left;
+    transition:.25s;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    font-size:15px;
+}
+
+.option-number{
+    min-width:34px;
+    height:34px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    border-radius:10px;
+    background:#18283e;
+    color:#7dd3fc;
+    font-weight:bold;
+}
+
+.option:hover{
+    transform:translateY(-3px);
+    border-color:#38bdf8;
+    background:rgba(56,189,248,.08);
+}
+
+.option.selected{
+    border-color:#8b5cf6;
+    background:linear-gradient(135deg,rgba(37,99,235,.2),rgba(124,58,237,.2));
+    box-shadow:0 0 25px rgba(124,58,237,.15);
+}
+
+.option.selected .option-number{
+    background:#7c3aed;
+    color:white;
+}
+
+/* NEXT */
+.next-container{
+    display:flex;
+    justify-content:flex-end;
+    margin-top:30px;
+}
+
+.next-btn{
+    padding:14px 28px;
+    border:none;
+    border-radius:12px;
+    background:#2563eb;
+    color:white;
+    font-weight:bold;
+    font-size:15px;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.next-btn:hover{
+    background:#3b82f6;
+    transform:translateY(-2px);
+}
+
+.next-btn:disabled{
+    opacity:.35;
+    cursor:not-allowed;
+    transform:none;
+}
+
+/* RESULTS */
+.results-section{
+    display:none;
+    padding:80px 0;
+}
+
+.result-card{
+    background:rgba(16,29,48,.75);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:25px;
+    padding:45px;
+    text-align:center;
+}
+
+.result-icon{
+    width:80px;
+    height:80px;
+    margin:0 auto 20px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    border-radius:50%;
+    background:linear-gradient(135deg,#2563eb,#7c3aed);
+    font-size:35px;
+}
+
+.result-card h2{
+    font-size:38px;
+    margin-bottom:12px;
+}
+
+.result-card > p{
+    color:#aebbd0;
+    line-height:1.7;
+}
+
+.career-results{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:18px;
+    margin-top:35px;
+}
+
+.career{
+    padding:25px;
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(56,189,248,.18);
+    border-radius:18px;
+}
+
+.career h3{
+    color:#7dd3fc;
+    margin-bottom:15px;
+}
+
+.score{
+    color:#cbd5e1;
+    font-size:14px;
+}
+
+.score-bar{
+    margin-top:12px;
+    height:7px;
+    background:#172337;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.score-fill{
+    height:100%;
+    background:linear-gradient(90deg,#38bdf8,#8b5cf6);
+    border-radius:20px;
+}
+
+.note{
+    margin-top:30px;
+    padding:18px;
+    border-radius:14px;
+    background:rgba(255,255,255,.035);
+    color:#aebbd0;
+    font-size:14px;
+    line-height:1.6;
+}
+
+.buttons{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    flex-wrap:wrap;
+    margin-top:30px;
+}
+
+.secondary-btn{
+    padding:13px 22px;
+    border:1px solid rgba(255,255,255,.15);
+    background:rgba(255,255,255,.05);
+    color:white;
+    border-radius:11px;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.secondary-btn:hover{
+    background:rgba(255,255,255,.1);
+    transform:translateY(-2px);
+}
+
+/* PYTHON SECTION */
+.python-section{
+    display:none;
+    padding:80px 0;
+}
+
+.python-intro{
+    text-align:center;
+    max-width:700px;
+    margin:0 auto 35px;
+    color:#aebbd0;
+    line-height:1.7;
+}
+
+.code-card{
+    background:#050b14;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:20px;
+    overflow:hidden;
+    margin-bottom:25px;
+}
+
+.code-header{
+    padding:14px 20px;
+    background:#101b2b;
+    color:#7dd3fc;
+    font-size:14px;
+    font-weight:bold;
+}
+
+pre{
+    padding:25px;
+    overflow-x:auto;
+    color:#dbeafe;
+    line-height:1.65;
+    font-size:14px;
+}
+
+.explanation{
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.07);
+    padding:25px;
+    border-radius:18px;
+    line-height:1.8;
+    color:#b8c4d6;
+}
+
+.explanation strong{
+    color:#fff;
+}
+
+/* FOOTER */
+footer{
+    padding:40px 20px;
+    text-align:center;
+    border-top:1px solid rgba(255,255,255,.07);
+    color:#7f8ca3;
+    font-size:13px;
+}
+
+footer strong{
+    color:#cbd5e1;
+}
+
+/* ANIMATION */
+.fade{
+    animation:fadeIn .5s ease;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(12px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+/* MOBILE */
+@media(max-width:700px){
+
+    nav{
+        padding:15px 5%;
+    }
+
+    .nav-tag{
+        display:none;
+    }
+
+    .hero{
+        min-height:80vh;
+    }
+
+    .hero h1{
+        font-size:48px;
+    }
+
+    .hero p{
+        font-size:16px;
+    }
+
+    .question-card{
+        padding:25px 18px;
+        border-radius:18px;
+    }
+
+    .question{
+        font-size:22px;
+    }
+
+    .options{
+        grid-template-columns:1fr;
+    }
+
+    .result-card{
+        padding:30px 18px;
+    }
+
+    .result-card h2{
+        font-size:29px;
+    }
+
+    pre{
+        font-size:12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav>
+    <div class="logo">Career<span>Path</span> AI</div>
+    <div class="nav-tag">Career Suggestion System • Class 10 Project</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+    <div class="hero-content">
+
+        <div class="badge">🎯 SMART CAREER DISCOVERY SYSTEM</div>
+
+        <h1>Find Your<br>Career Direction</h1>
+
+        <p>
+            Answer 8 simple questions about your interests, subjects,
+            skills and personality. The system will identify the career
+            domains that match your choices.
+        </p>
+
+        <button class="start-btn" onclick="startQuiz()">
+            Start Career Quiz →
+        </button>
+
+    </div>
+</section>
+
+
+<!-- QUIZ -->
+<section class="quiz-section" id="quiz">
+
+<div class="container">
+
+    <div class="section-title">
+        <h2>Career Discovery Quiz</h2>
+        <p>Choose the option that suits you the most.</p>
+    </div>
+
+    <div class="progress-info">
+        <span id="questionCount">Question 1 of 8</span>
+        <span id="progressPercent">12%</span>
+    </div>
+
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <div class="question-card fade" id="questionCard">
+
+        <div class="question-number" id="questionLetter">QUESTION A</div>
+
+        <div class="question" id="questionText"></div>
+
+        <div class="options" id="options"></div>
+
+        <div class="next-container">
+            <button class="next-btn" id="nextButton" disabled>
+                Next Question →
+            </button>
+        </div>
+
+    </div>
+
+</div>
+</section>
+
+
+<!-- RESULTS -->
+<section class="results-section" id="results">
+
+<div class="container">
+
+    <div class="section-title">
+        <div class="result-icon">🏆</div>
+        <h2>Your Career Results</h2>
+        <p>Based on the answers you selected.</p>
+    </div>
+
+    <div class="result-card">
+
+        <h2 id="resultTitle"></h2>
+
+        <p>
+            Your answers show the strongest connection with
+            the following career domain(s).
+        </p>
+
+        <div class="career-results" id="careerResults"></div>
+
+        <div class="note">
+            💡 <strong>Important:</strong>
+            This system provides only a career suggestion based on
+            your selected answers. Your final career decision should
+            depend on your interests, abilities, education, goals
+            and guidance from parents and teachers.
+        </div>
+
+        <div class="buttons">
+
+            <button class="secondary-btn" onclick="restartQuiz()">
+                🔄 Take Quiz Again
+            </button>
+
+            <button class="start-btn" style="margin-top:0"
+                    onclick="showPython()">
+                🐍 How I Created This
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+</section>
+
+
+<!-- PYTHON -->
+<section class="python-section" id="python">
+
+<div class="container">
+
+    <div class="section-title">
+        <h2>How I Created This System</h2>
+        <p>Python logic used to build the Career Suggestion System.</p>
+    </div>
+
+    <p class="python-intro">
+        The original career suggestion system was created using Python.
+        The website uses HTML, CSS and JavaScript to provide an interactive
+        version of the same idea.
+    </p>
+
+
+    <div class="code-card">
+
+        <div class="code-header">
+            01 — Creating Career Scores
+        </div>
+
+<pre><code>careers = {
+    "Technology & IT": 0,
+    "Healthcare & Medicine": 0,
+    "Business & Finance": 0,
+    "Arts & Design": 0,
+    "Education & Teaching": 0,
+    "Engineering": 0,
+    "Media & Communication": 0,
+    "Psychology & Social Services": 0
+}</code></pre>
+
+    </div>
+
+
+    <div class="code-card">
+
+        <div class="code-header">
+            02 — Asking Questions
+        </div>
+
+<pre><code>print("What activity do you enjoy the most?")
+
+print("1. Coding or solving computer problems")
+print("2. Helping sick or injured people")
+print("3. Managing money or planning a business")
+print("4. Drawing, designing or creating art")
+print("5. Teaching or explaining topics")
+print("6. Building or fixing things")
+print("7. Writing, speaking or making videos")
+print("8. Understanding people's behavior")
+
+A = int(input("Enter your choice: "))</code></pre>
+
+    </div>
+
+
+    <div class="code-card">
+
+        <div class="code-header">
+            03 — Matching Answers With Careers
+        </div>
+
+<pre><code>if A == 1:
+    careers["Technology & IT"] += 1
+
+elif A == 2:
+    careers["Healthcare & Medicine"] += 1
+
+elif A == 3:
+    careers["Business & Finance"] += 1
+
+elif A == 4:
+    careers["Arts & Design"] += 1
+
+elif A == 5:
+    careers["Education & Teaching"] += 1
+
+elif A == 6:
+    careers["Engineering"] += 1
+
+elif A == 7:
+    careers["Media & Communication"] += 1
+
+elif A == 8:
+    careers["Psychology & Social Services"] += 1</code></pre>
+
+    </div>
+
+
+    <div class="code-card">
+
+        <div class="code-header">
+            04 — Finding The Highest Score
+        </div>
+
+<pre><code>heighest_score = max(careers.values())
+
+for career, score in careers.items():
+
+    if score == heighest_score:
+        print("-", career)</code></pre>
+
+    </div>
+
+
+    <div class="explanation">
+
+        <strong>How the logic works:</strong><br><br>
+
+        Every career starts with a score of <strong>0</strong>.
+        Each answer is connected to one career domain.
+        Whenever the user selects an option, that career receives
+        <strong>+1 point</strong>.<br><br>
+
+        After all 8 questions are answered, the program checks
+        which career has the highest score using Python's
+        <strong>max()</strong> function.<br><br>
+
+        If two or more careers have the same highest score,
+        the system displays all of them as possible suggestions.
+
+    </div>
+
+
+    <div class="buttons">
+
+        <button class="secondary-btn" onclick="restartQuiz()">
+            🔄 Try The Quiz Again
+        </button>
+
+    </div>
+
+</div>
+</section>
+
+
+<footer>
+    <strong>CareerPath AI</strong> — Career Suggestion System
+    <br><br>
+    Created as an educational project using HTML, CSS, JavaScript & Python Logic
+</footer>
+
+
+<script>
+
+/* =========================
+   QUESTIONS
+========================= */
+
+const questions = [
+
+{
+letter:"A",
+question:"What activity do you enjoy the most?",
+options:[
+"Coding or solving computer problems",
+"Helping sick or injured people",
+"Managing money or planning a business",
+"Drawing, designing or creating art",
+"Teaching or explaining topics",
+"Building or fixing things",
+"Writing, speaking or making videos",
+"Understanding people's behavior"
+]
+},
+
+{
+letter:"B",
+question:"Which subject do you enjoy the most?",
+options:[
+"Computer Science",
+"Biology",
+"Accountancy or Economics",
+"Arts or Design",
+"English or a teaching related subject",
+"Mathematics or Physics",
+"Languages or Media Studies",
+"Psychology or Sociology"
+]
+},
+
+{
+letter:"C",
+question:"Which task would you prefer in a project?",
+options:[
+"Developing an app",
+"Researching a health person",
+"Creating a business plan",
+"Designing a poster",
+"Explaining a topic to classmates",
+"Building a working model",
+"Making a presentation or video",
+"Studying how people think"
+]
+},
+
+{
+letter:"D",
+question:"What kind of problem do you like solving?",
+options:[
+"Technical or logical problems",
+"Health related problems",
+"Financial or business problems",
+"Visual or creative problems",
+"Learning difficulties",
+"Mechanical or structural problems",
+"Communication problems",
+"Personal or social problems"
+]
+},
+
+{
+letter:"E",
+question:"Which work environment sounds interesting?",
+options:[
+"A software or technology company",
+"A hospital or healthcare centre",
+"An office or business setting",
+"A creative studio",
+"A school or training centre",
+"An engineering site or workshop",
+"A media or production studio",
+"A community or counselling centre"
+]
+},
+
+{
+letter:"F",
+question:"Which skill would you like to develop?",
+options:[
+"Programming and data analysis",
+"Medical and healthcare skills",
+"Financial planning and leadership",
+"Art and visual design",
+"Teaching and explaining",
+"Engineering and technical design",
+"Writing and public speaking",
+"Listening and understanding people"
+]
+},
+
+{
+letter:"G",
+question:"What would you enjoy creating?",
+options:[
+"A website or software application",
+"A health awareness project",
+"A business or financial plan",
+"An illustration or design",
+"A lesson or study guide",
+"A machine or physical model",
+"A video, article or podcast",
+"A community support project"
+]
+},
+
+{
+letter:"H",
+question:"Which statement describes you best?",
+options:[
+"I enjoy logic and technology",
+"I care about health and wellbeing",
+"I like organising plans and managing money",
+"I am imaginative and creative",
+"I enjoy helping others",
+"I like practical, hands-on challenges",
+"I enjoy communicating ideas",
+"I am curious about people and society"
+]
+}
+
+];
+
+
+/* =========================
+   CAREERS
+========================= */
+
+const careers = [
+
+"Technology & IT",
+"Healthcare & Medicine",
+"Business & Finance",
+"Arts & Design",
+"Education & Teaching",
+"Engineering",
+"Media & Communication",
+"Psychology & Social Services"
+
+];
+
+
+/* =========================
+   VARIABLES
+========================= */
+
+let currentQuestion = 0;
+let selectedOption = null;
+
+let scores = {};
+
+function resetScores(){
+
+    scores = {};
+
+    careers.forEach(career => {
+        scores[career] = 0;
+    });
+
+}
+
+
+/* =========================
+   START QUIZ
+========================= */
+
+function startQuiz(){
+
+    document.getElementById("home").style.display = "none";
+
+    document.getElementById("quiz").style.display = "block";
+
+    resetScores();
+
+    currentQuestion = 0;
+
+    selectedOption = null;
+
+    loadQuestion();
+
+    document.getElementById("quiz").scrollIntoView({
+        behavior:"smooth"
+    });
+
+}
+
+
+/* =========================
+   LOAD QUESTION
+========================= */
+
+function loadQuestion(){
+
+    const q = questions[currentQuestion];
+
+    selectedOption = null;
+
+    document.getElementById("questionLetter").textContent =
+        "QUESTION " + q.letter;
+
+    document.getElementById("questionText").textContent =
+        q.question;
+
+    document.getElementById("questionCount").textContent =
+        "Question " + (currentQuestion + 1) + " of 8";
+
+    const percentage =
+        Math.round(((currentQuestion + 1) / 8) * 100);
+
+    document.getElementById("progressPercent").textContent =
+        percentage + "%";
+
+    document.getElementById("progressFill").style.width =
+        percentage + "%";
+
+
+    const optionsContainer =
+        document.getElementById("options");
+
+    optionsContainer.innerHTML = "";
+
+
+    q.options.forEach((option,index)=>{
+
+        const button = document.createElement("button");
+
+        button.className = "option";
+
+        button.innerHTML = `
+            <span class="option-number">${index+1}</span>
+            <span>${option}</span>
+        `;
+
+        button.onclick = function(){
+
+            document.querySelectorAll(".option")
+                .forEach(btn => btn.classList.remove("selected"));
+
+            button.classList.add("selected");
+
+            selectedOption = index;
+
+            document.getElementById("nextButton").disabled = false;
+
+        };
+
+        optionsContainer.appendChild(button);
+
+    });
+
+
+    const nextButton =
+        document.getElementById("nextButton");
+
+    nextButton.textContent =
+        currentQuestion === 7
+        ? "See My Results →"
+        : "Next Question →";
+
+    nextButton.disabled = true;
+
+}
+
+
+/* =========================
+   NEXT BUTTON
+========================= */
+
+document.getElementById("nextButton").onclick = function(){
+
+    if(selectedOption === null) return;
+
+    scores[careers[selectedOption]]++;
+
+    currentQuestion++;
+
+    if(currentQuestion < questions.length){
+
+        loadQuestion();
+
+        document.getElementById("questionCard")
+            .classList.remove("fade");
+
+        void document.getElementById("questionCard").offsetWidth;
+
+        document.getElementById("questionCard")
+            .classList.add("fade");
+
+    }
+
+    else{
+
+        showResults();
+
+    }
+
+};
+
+
+/* =========================
+   RESULTS
+========================= */
+
+function showResults(){
+
+    document.getElementById("quiz").style.display = "none";
+
+    document.getElementById("results").style.display = "block";
+
+    const highestScore =
+        Math.max(...Object.values(scores));
+
+
+    const resultContainer =
+        document.getElementById("careerResults");
+
+    resultContainer.innerHTML = "";
+
+
+    const winners = careers.filter(career =>
+        scores[career] === highestScore
+    );
+
+
+    if(highestScore === 0){
+
+        document.getElementById("resultTitle").textContent =
+            "No valid answers";
+
+        return;
+
+    }
+
+
+    if(winners.length === 1){
+
+        document.getElementById("resultTitle").textContent =
+            winners[0];
+
+    }
+
+    else{
+
+        document.getElementById("resultTitle").textContent =
+            "Multiple Career Matches";
+
+    }
+
+
+    winners.forEach(career => {
+
+        const card = document.createElement("div");
+
+        card.className = "career";
+
+        const percentage =
+            (scores[career] / 8) * 100;
+
+        card.innerHTML = `
+
+            <h3>${career}</h3>
+
+            <div class="score">
+                Match Score: ${scores[career]} / 8
+            </div>
+
+            <div class="score-bar">
+                <div
+                    class="score-fill"
+                    style="width:${percentage}%">
+                </div>
+            </div>
+
+        `;
+
+        resultContainer.appendChild(card);
+
+    });
+
+
+    document.getElementById("results")
+        .scrollIntoView({
+            behavior:"smooth"
+        });
+
+}
+
+
+/* =========================
+   PYTHON SECTION
+========================= */
+
+function showPython(){
+
+    document.getElementById("python").style.display = "block";
+
+    document.getElementById("python")
+        .scrollIntoView({
+            behavior:"smooth"
+        });
+
+}
+
+
+/* =========================
+   RESTART
+========================= */
+
+function restartQuiz(){
+
+    document.getElementById("results").style.display = "none";
+
+    document.getElementById("python").style.display = "none";
+
+    document.getElementById("home").style.display = "flex";
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+
+/* =========================
+   INITIALISE
+========================= */
+
+resetScores();
+
+</script>
+
+</body>
+</html>
+```
